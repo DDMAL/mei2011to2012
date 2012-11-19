@@ -31,12 +31,12 @@
             <xsl:apply-templates select="@*[name()!='facs']"/>
             <laidOutStaff>
                 <laidOutLayer>
-                    <xsl:for-each select="//layer//*[name()!='sb']">
+                    <xsl:for-each select="//layer/*[name()!='sb']">
                         <laidOutElement>
                             <xsl:attribute name="target">
                                 <xsl:value-of select="@xml:id"/>
                             </xsl:attribute>
-                            <xsl:apply-templates select="//zone/@*[name()!='xml:id']"/>
+                            <xsl:apply-templates select="//zone[./@xml:id=current()/@facs]/@*"/>
                         </laidOutElement>
                     </xsl:for-each>
                 </laidOutLayer>
