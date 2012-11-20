@@ -31,21 +31,36 @@
             <xsl:apply-templates select="@*[name()!='facs']"/>
             <laidOutStaff>
                 <laidOutLayer>
-                    <xsl:for-each select="//layer/*[name()!='sb']">
+                    <xsl:for-each select="//layer/*[@facs]">
                         <laidOutElement>
                             <xsl:attribute name="target">
                                 <xsl:value-of select="@xml:id"/>
                             </xsl:attribute>
-                            <xsl:apply-templates select="//zone[./@xml:id=current()/@facs]/@*"/>
+                            <xsl:apply-templates select="//zone[./@xml:id=current()/@facs]/@*[name()!='xml:id']"/>
                         </laidOutElement>
                     </xsl:for-each>
                 </laidOutLayer>
             </laidOutStaff>
         </xsl:copy>
     </xsl:template>
-    <xsl:template match="score">
+    <xsl:template match="body">
         <xsl:copy>
-            <xsl:apply-templates select="section"/>
+            <xsl:for-each select="//staffGrp/staffDef">
+                <mdiv>
+                    <score>
+                        <scoreDef>
+                            <staffGrp>
+                                <xsl:copy>
+                                   <xsl:apply-templates select="@*|node()"/>                                    
+                                </xsl:copy>
+                            </staffGrp>
+                        </scoreDef>
+                        <section>
+                            <xsl:copy-of select="//section/staff[./@n=current()/@n]"/>
+                        </section>
+                    </score>
+                </mdiv>
+            </xsl:for-each>
         </xsl:copy>
     </xsl:template>
 </xsl:stylesheet>
