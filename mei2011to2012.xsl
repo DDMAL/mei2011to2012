@@ -28,6 +28,7 @@
         </xsl:copy>
         </layouts>
     </xsl:template>
+    <!-- Add elements to new layouts section - grabs coords from zone according to facs -->
     <xsl:template match="mei:system">
         <xsl:variable name="selectedSystem" select="."/>
         <xsl:copy>
@@ -35,6 +36,7 @@
             <xsl:apply-templates select="@*[name()!='facs']"/>
             <laidOutStaff staff="1">
                 <laidOutLayer>
+                    <!-- Add element to system referred to by its immediately preceding sb -->
                     <xsl:for-each select="//mei:layer/*[@facs and preceding::mei:sb[1]/@systemref=$selectedSystem/@xml:id]">
                         <laidOutElement>
                             <xsl:attribute name="target">
@@ -50,37 +52,16 @@
             </laidOutStaff>
         </xsl:copy>
     </xsl:template>
-    <!--
-    <xsl:template match="body">
-        <xsl:copy>
-            <xsl:for-each select="//staffGrp/staffDef">
-                <mdiv>
-                    <score>
-                        <scoreDef>
-                            <staffGrp>
-                                <xsl:copy>
-                                   <xsl:apply-templates select="@*|node()"/>                                    
-                                </xsl:copy>
-                            </staffGrp>
-                        </scoreDef>
-                        <section>
-                            <xsl:copy-of select="//section/staff[./@n=current()/@n]"/>
-                        </section>
-                    </score>
-                </mdiv>
-            </xsl:for-each>
-        </xsl:copy>
-    </xsl:template>
-    -->
+    <!-- Copy over contents of all staff elements, but not staff or layer (everything will be in one staff and layer) -->
     <xsl:template match="mei:staff">
         <xsl:copy-of select="current()/mei:layer/child::node()[name()!='sb']" />   
     </xsl:template>
+    <!-- Make sure only one staff is defined -->
     <xsl:template match="mei:staffGrp">
         <xsl:copy>
             <xsl:apply-templates select="current()/mei:staffDef[@n='1']"/>
         </xsl:copy>
     </xsl:template>
-
     <xsl:template match="mei:section">
         <section>
             <staff>
