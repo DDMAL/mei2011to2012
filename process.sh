@@ -14,4 +14,5 @@ FILES=$2/*
 for f in $FILES
 do
 	saxon -s:$f -xsl:$1 -o:$3/$(basename $f)
+	echo "Processed file: $(basename $f)"
 done
