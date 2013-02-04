@@ -17,8 +17,9 @@
         <xsl:attribute name="meiversion">2012</xsl:attribute>
     </xsl:template>
     
-    <!-- Remove zone nodes -->
-    <xsl:template match="mei:facsimile"/>
+    <!-- Remove zone nodes of stuff to be moved to laiedOutElement, keep for lyrics -->
+    <xsl:template match="mei:zone[@xml:id=//mei:layer/child::*/@facs]"/>
+    <xsl:template match="mei:zone[@xml:id=//mei:page/child::*/@facs]"/>
     
     <!-- Modify nodes -->
     <xsl:template match="mei:layout">
@@ -45,7 +46,7 @@
                             <xsl:apply-templates select="//mei:zone[./@xml:id=current()/@facs]/@*[name()!='xml:id']"/>
                         </laidOutElement>
                         <xsl:if test="name()='division' and @form='final'">
-                            <!--<sectionBreak />-->
+                            <xsl:comment>sectionBreak</xsl:comment>
                         </xsl:if>
                     </xsl:for-each>
                 </laidOutLayer>
