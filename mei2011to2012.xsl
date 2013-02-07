@@ -5,11 +5,20 @@
     version="2.0">
     <xsl:output indent="yes" encoding="UTF-8"/>
     
-    <!-- Copy everything -->
+    <!-- Copy everything except @xlink:href; change those to @target-->
     <xsl:template match="@*|node()">
-        <xsl:copy>
-            <xsl:apply-templates select="@*|node()"/>
-        </xsl:copy>
+        <xsl:choose>
+            <xsl:when test="name()!='xlink:href'">
+                <xsl:copy>
+                    <xsl:apply-templates select="@*|node()"/>
+                </xsl:copy>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:attribute name="target">
+                    <xsl:value-of select="."/>
+                </xsl:attribute>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
     
     <!-- Change meiversion -->
