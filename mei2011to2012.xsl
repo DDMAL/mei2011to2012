@@ -62,10 +62,7 @@
             </laidOutStaff>
         </xsl:copy>
     </xsl:template>
-    <!-- Copy over contents of all staff elements, but not staff or layer (everything will be in one staff and layer) -->
-    <xsl:template match="mei:staff">
-        <xsl:copy-of select="current()/mei:layer/child::node()[name()!='sb' and name()!='oct']" />   
-    </xsl:template>
+
     <!-- Make sure only one staff is defined -->
     <xsl:template match="mei:staffGrp">
         <xsl:copy>
@@ -76,11 +73,15 @@
         <section>
             <staff>
                 <layer>
-                    <xsl:apply-templates select="./*[name()!='pb']" />
+                    <xsl:apply-templates select="current()/mei:staff/mei:layer/*[name()!='sb' and name()!='pb']" />
+                    <xsl:copy-of select="current()/mei:div"/>
                 </layer>
             </staff>
         </section>
     </xsl:template>
+    
+    <xsl:template match="mei:accid/@oct"/>
+   
     
     <!-- If there are no lyrics, add empty <l /> to <lg> for validation purposes -->
     <xsl:template match="mei:lg">
