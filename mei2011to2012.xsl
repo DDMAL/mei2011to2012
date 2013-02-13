@@ -74,7 +74,7 @@
             <staff>
                 <layer>
                     <xsl:apply-templates select="current()/mei:staff/mei:layer/*[name()!='sb' and name()!='pb']" />
-                    <xsl:copy-of select="current()/mei:div"/>
+                    <xsl:apply-templates select="current()/mei:div"/>
                 </layer>
             </staff>
         </section>
@@ -85,11 +85,16 @@
     
     <!-- If there are no lyrics, add empty <l /> to <lg> for validation purposes -->
     <xsl:template match="mei:lg">
-        <xsl:if test="not(mei:lg/mei:l)">
-            <xsl:copy>
-                <l />
-            </xsl:copy>
-        </xsl:if>
+        <xsl:choose>
+            <xsl:when test="not(current()/mei:l)">
+                <xsl:copy>
+                    <l />
+                </xsl:copy>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:copy-of select="current()"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 </xsl:stylesheet>
