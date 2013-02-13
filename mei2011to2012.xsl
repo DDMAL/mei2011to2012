@@ -81,6 +81,7 @@
     </xsl:template>
     
     <xsl:template match="mei:accid/@oct"/>
+    <xsl:template match="mei:accid/@pname"/>
    
     
     <!-- If there are no lyrics, add empty <l /> to <lg> for validation purposes -->
